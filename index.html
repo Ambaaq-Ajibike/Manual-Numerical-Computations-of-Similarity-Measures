@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Manual Numerical Computations of Similarity Measures</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	
+	<link rel="stylesheet" href="css/style.css">
+
+	</head>
+	<body>
+	<section style="padding: 20px;">
+		<div>
+			<div >
+				<div >
+					<h1 class="heading-section" style="margin-bottom: 6pc;
+					text-align: center;">Manual Numerical Computations of Similarity Measures</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="table-wrap">
+						<form style="display: flex; justify-content: space-between;">
+							<div class="form-group">
+							  	<input style="width: 136%;" type="text" class="form-control" id="stringA" placeholder="First input string">
+							</div>
+							<div class="form-group">
+							  	<input style="width: 136%;" type="text" class="form-control" id="stringB" placeholder="Second input string">
+							</div>
+								<button type="button" class="btn btn-primary" id="submit">Submit</button>
+									<!-- <input type="file" id="file-upload">
+								<button type="button" class="btn btn-secondary" onclick="upload()">Upload</button> -->
+						  </form>
+						  <table class="table">
+							<thead>
+							  <tr>
+								<th scope="col">Inputs</th>
+								<th scope="col">Jaccard</th>
+								<th scope="col">Rassel Rao</th>
+								<th scope="col">Faith similarity</th>
+								<th scope="col">Sorensen Dice</th>
+								<th scope="col">New Improved Sorensen Dice</th>
+							  </tr>
+							</thead>
+							<tbody id="table-body">
+							</tbody>
+						  </table>
+					</div>
+					<div style="display: flex;">
+						<canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+						<canvas id="histogram" style="width:100%;max-width:700px"></canvas>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</section>
+	<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+	</script>
+	<script src="script.js"></script>
+	</body>
+</html>
+
