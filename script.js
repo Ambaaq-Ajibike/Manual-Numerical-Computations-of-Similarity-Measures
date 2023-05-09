@@ -4,9 +4,11 @@ let submit = document.querySelector("#submit");
 let tableBody = document.querySelector("#table-body");
 
 let executeAlgorithm = (a, b) => {
+    var startTime = Date.now();
+
     let setA = TurnToBygram(a);
     let setB = TurnToBygram(b);
-console.log(setA.length, setB.length)
+    console.log(setA.length, setB.length)
     let D = (setA.length + setB.length);
 
     let int = new Set(setA.filter(x => setB.includes(x)))
@@ -18,69 +20,85 @@ console.log(setA.length, setB.length)
     let union = (new Set([...setA, ...setB]).size)
 
     let C = new Set(Array.from(t2).filter(x => !Array.from(int).includes(x))).size
-
+    let arrTime = [];
     let jaccard = () => {
-        return intersect / union;
+        let result = intersect / union;
+        const endTime = Date.now();
+        const time = endTime - startTime;
+        startTime = Date.now();
+        arrTime.push(
+            {
+               name: "Jaccard",
+               time:time
+            }
+            );
+        return result;
     }
 
-    let diceCoefficient = () => {
-        return (2 * intersect) / D;
-    }
 
     let rasselRao = () => {
-        return (intersect) / n;
+        const result =  (intersect) / n;
+        const endTime = Date.now();
+        const time = endTime - startTime;
+        startTime = Date.now();
+        arrTime.push(
+            {
+               name: "Rassel",
+               time:time
+            }
+            );
+        return result;
     }
 
-    let faithsimilarity = () => { 
-        // console.log(n, union, intersect)
+    let faithsimilarity = () => {
+        
         let bar = (n / union) 
         let intersectBar =  bar/ intersect;
-        return (intersect  + intersectBar) / (2 * n);
+        let result = (intersect  + intersectBar) / (2 * n);
+        const endTime = Date.now();
+        const time = endTime - startTime;
+        arrTime.push(
+            {
+               name: "Faith",
+               time:time
+            }
+            );
+        return result;
     }
 
     let sorensenDice = () => {
-        console.time("tests");
         let result =  (2 * intersect) / D;
-        console.timeEnd("tests") 
+        const endTime = Date.now();
+        const time = endTime - startTime;
+        startTime = Date.now();
+        arrTime.push(
+            {
+               name: "Sorrensen",
+               time:time
+            }
+            );
         return result;
     }
 
     let newImprovedSorensenDice = () => {
-        let start = new Date().getTime();
-        console.time("test");
         let result = ((2 * D * intersect) + C) / D**2;
-        let end = new Date().getTime();
-        console.log(end - start, end, start);
-        console.timeEnd("test")
+        const endTime = Date.now();
+        const time = endTime - startTime;
+        startTime = Date.now();
+        arrTime.push(
+            {
+               name: "Sorrensen",
+               time:time
+            }
+            );
         return result;
     }
     const xValues = ["Jaccard", "Rassel", "Faith", "Sorensen", "New"];
-const yValues = [jaccard().toFixed(3), rasselRao().toFixed(3), faithsimilarity().toFixed(3), sorensenDice().toFixed(3), newImprovedSorensenDice().toFixed(3)];
+    const yValues = [jaccard().toFixed(3), rasselRao().toFixed(3), faithsimilarity().toFixed(3), sorensenDice().toFixed(3), newImprovedSorensenDice().toFixed(3)];
 
-new Chart("myChart", {
-  type: "line",
-  data: {
-    labels: xValues,
-    datasets: [{
-      backgroundColor:"rgba(0,0,255,1.0)",
-      borderColor: "rgba(0,0,255,0.1)",
-      data: yValues
-    }]
-  },
-});
+    generateCharts(xValues, yValues, arrTime);
 
-var barColors = ["red", "green","blue","orange","brown"];
 
-new Chart("histogram", {
-  type: "bar",
-  data: {
-    labels: xValues,
-    datasets: [{
-      backgroundColor: barColors,
-      data: yValues
-    }]
-  },
-});
     tableBody.innerHTML += `
             <tr>
             <th scope="row">
@@ -159,22 +177,60 @@ function  TurnToBygram(sentence)
         let word = sentenceArray[i];
         for (let j = 0; j < word.length-1; j++)
         {
-            if (i == 0)
-            {
-                if (word.length != 1)
-                {
-                    response.push(`${word[j]}${word[j+1]}`);
-                }
-                else
-                {
-                    response.push(`${word[j]}`);
-                }
-            }
-            else
-            {
+           
                 response.push(`${word[j]}${word[j+1]}`);
-            }
         }
     }
     return response;
+}
+
+
+let generateCharts = (xValues, yValues, arrTime) => {
+    
+        var barColors = ["red", "green","blue","orange","brown"];
+
+        new Chart("histogram", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+            }]
+        },
+        });
+        new Chart("myChart", {
+        type: "bar",
+        data: {
+            labels: xValues.slice(0, -1),
+            datasets: [{
+            backgroundColor: ["green", "red", "brown", "orange"],
+            data: yValues.slice(0, -1)
+            }]
+        },
+        options: {
+            responsive: true,
+        title: {
+            display: true,
+            text: 'Chart Without New Improved'
+        }
+        }
+        });
+        new Chart("timegraph", {
+        type: "bar",
+        data: {
+            labels: arrTime.map(x => x.name),
+            datasets: [{
+            backgroundColor: ["green", "red", "brown", "orange"],
+            data: arrTime.map(x => x.time)
+            }]
+        },
+        options: {
+            responsive: true,
+        title: {
+            display: true,
+            text: 'Time Chart'
+        }
+        }
+        });
 }
