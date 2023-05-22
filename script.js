@@ -4,7 +4,7 @@ let submit = document.querySelector("#submit");
 let tableBody = document.querySelector("#table-body");
 
 let executeAlgorithm = (a, b) => {
-    var startTime = Date.now();
+    var startTime = performance.now();;
 
     let setA = TurnToBygram(a);
     let setB = TurnToBygram(b);
@@ -23,9 +23,9 @@ let executeAlgorithm = (a, b) => {
     let arrTime = [];
     let jaccard = () => {
         let result = intersect / union;
-        const endTime = Date.now();
+        const endTime = performance.now();
         const time = endTime - startTime;
-        startTime = Date.now();
+        startTime = performance.now();;
         arrTime.push(
             {
                name: "Jaccard",
@@ -38,9 +38,9 @@ let executeAlgorithm = (a, b) => {
 
     let rasselRao = () => {
         const result =  (intersect) / n;
-        const endTime = Date.now();
+        const endTime = performance.now();
         const time = endTime - startTime;
-        startTime = Date.now();
+        startTime = performance.now();;
         arrTime.push(
             {
                name: "Rassel",
@@ -55,7 +55,7 @@ let executeAlgorithm = (a, b) => {
         let bar = (n / union) 
         let intersectBar =  bar/ intersect;
         let result = (intersect  + intersectBar) / (2 * n);
-        const endTime = Date.now();
+        const endTime = performance.now();
         const time = endTime - startTime;
         arrTime.push(
             {
@@ -68,9 +68,9 @@ let executeAlgorithm = (a, b) => {
 
     let sorensenDice = () => {
         let result =  (2 * intersect) / D;
-        const endTime = Date.now();
+        const endTime = performance.now();
         const time = endTime - startTime;
-        startTime = Date.now();
+        startTime = performance.now();;
         arrTime.push(
             {
                name: "Sorrensen",
@@ -82,12 +82,12 @@ let executeAlgorithm = (a, b) => {
 
     let newImprovedSorensenDice = () => {
         let result = ((2 * D * intersect) + C) / D**2;
-        const endTime = Date.now();
+        const endTime = performance.now();
         const time = endTime - startTime;
-        startTime = Date.now();
+        startTime = performance.now();;
         arrTime.push(
             {
-               name: "Sorrensen",
+               name: "NewImproved",
                time:time
             }
             );
@@ -198,6 +198,14 @@ let generateCharts = (xValues, yValues, arrTime) => {
             data: yValues
             }]
         },
+        
+        options: {
+            responsive: true,
+        title: {
+            display: true,
+            text: 'Chart With New Improved'
+        }
+        }
         });
         new Chart("myChart", {
         type: "bar",
@@ -229,7 +237,25 @@ let generateCharts = (xValues, yValues, arrTime) => {
             responsive: true,
         title: {
             display: true,
-            text: 'Time Chart'
+            text: 'Time Chart Without New Improved'
+        }
+        }
+        });
+
+        new Chart("timegraphnew", {
+        type: "bar",
+        data: {
+            labels: arrTime.map(x => x.name),
+            datasets: [{
+            backgroundColor: ["green", "red", "brown", "orange"],
+            data: arrTime.map(x => x.time)
+            }]
+        },
+        options: {
+            responsive: true,
+        title: {
+            display: true,
+            text: 'Time Chart With New Improved'
         }
         }
         });
